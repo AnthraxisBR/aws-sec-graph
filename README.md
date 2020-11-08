@@ -1,10 +1,10 @@
 # aws-sec-graph
 
-#Pourpose
+# Pourpose
 
 Give a overview of AWS Security Group and EC2 instances, allowing you to see the relation over instances X security groups X opened ports.
 
-#Requirements
+# Requirements
 
 ### Packages
 
@@ -24,16 +24,16 @@ Give a overview of AWS Security Group and EC2 instances, allowing you to see the
 
     * All
 
-#Usage
+# Usage
 
 python3 run.py --command=analyze
 
 
-#Recomendations
+# Recomendations
 
 - https://github.com/jrfonseca/xdot.py
 
-#TODO 
+# TODO 
 1. Use aws profile
 2. Filter for instances to graph
 3. Filter for ports
