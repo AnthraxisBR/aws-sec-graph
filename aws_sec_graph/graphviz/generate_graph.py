@@ -168,7 +168,7 @@ def mount_graph_from_nodes(
     return graph
 
 
-def generate_grahp(
+def generate_graph(
         security_groups,
         ec2_instances,
         comment: str = 'Security Group Digraph',
