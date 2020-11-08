@@ -53,13 +53,30 @@ class AwsSecGraph(object):
             description=''
         )
 
-        # Optional
         parser.add_argument('--profile',
                             dest='profile',
                             action='store',
                             type=str,
                             default='default',
                             help='AWS Profile to authenticate'
+                            )
+
+        parser.add_argument('--filter',
+                            dest='filter',
+                            action='store',
+                            type=str,
+                            required=False,
+                            default='',
+                            help=''
+                            )
+
+        parser.add_argument('--format',
+                            dest='format',
+                            action='store',
+                            type=str,
+                            required=False,
+                            default='xdot',
+                            help=''
                             )
 
         args = parser.parse_args(sys.argv[2:])
