@@ -161,8 +161,6 @@ def mount_graph_from_nodes(
 
     for node in nodes:
         graph.node(node, label=nodes[node]['name'], color='green')
-        if 'sg-561aa633' in node:
-            print(nodes)
         already_mapped.append(node)
 
     for node in nodes:
