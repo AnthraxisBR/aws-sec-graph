@@ -5,7 +5,7 @@ import argparse
 import sys
 
 
-__version__ = 'v0.0.26'
+__version__ = 'v0.0.1'
 
 
 class AwsSecGraph(object):
@@ -79,6 +79,13 @@ class AwsSecGraph(object):
                             help=''
                             )
 
+        parser.add_argument('--port-filter',
+                            dest='port_filter',
+                            action='store',
+                            type=str,
+                            required=False,
+                            help=''
+                            )
         args = parser.parse_args(sys.argv[2:])
 
         analyze(args)

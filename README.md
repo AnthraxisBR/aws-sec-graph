@@ -39,6 +39,7 @@ Give a overview of AWS Security Group and EC2 instances, allowing you to see the
     --profile  : Inform aws profile to authenticate using boto3 lib
     --filter : Filter to apply on describe instances (https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html)
     --format : output format (https://graphviz.org/doc/info/output.html)
+    --port-filter : Inform a especific port or a range of ports to filter the output, example: 1 unique port "22" or range of ports "20:22"
 
 # Usage
 
@@ -49,6 +50,16 @@ Give a overview of AWS Security Group and EC2 instances, allowing you to see the
 ### Using filter
 
      python run.py --command=analyze --profile=default --filter='[{"Name": "tag:environment","Values": ["staging"]}]'
+
+### Using port filter
+       
+Range of ports:
+     
+     python run.py --command=analyze --profile=default --port-filter=20:22
+     
+Unique port:
+     
+     python run.py --command=analyze --profile=default --port-filter=22
      
  ## Change output format (based on graphviz lib)
 
@@ -63,6 +74,6 @@ Give a overview of AWS Security Group and EC2 instances, allowing you to see the
 # TODO 
 1. Use aws profile: done (08/11/2020)
 2. Filter for instances to graph: done (08/11/2020)
-3. Filter for ports
+3. Filter for ports: done (18/12/2020)
 4. Generate different page for security group
 

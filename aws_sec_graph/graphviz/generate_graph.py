@@ -20,22 +20,68 @@ def check_if_security_group_is_attached_to_an_instance(
     return False
 
 
+def extract_only_filtered_ports(
+        security_group: dict,
+        port: int = 0,
+        port_range: list = []
+) -> tuple:
+    security_group_copy = security_group.copy()
+    security_group_copy['IpPermissions'] = []
+    for index, ip_permission in enumerate(security_group['IpPermissions']):
+        if 'FromPort' in ip_permission:
+            from_port = ip_permission['FromPort']
+            to_port = ip_permission['ToPort']
+            if len(port_range) > 0:
+                if from_port in port_range:
+                    security_group_copy['IpPermissions'].append(ip_permission)
+            else:
+                if to_port <= port >= from_port:
+                    security_group_copy['IpPermissions'].append(ip_permission)
+    return (
+        len(security_group_copy['IpPermissions']) > 0,
+        security_group_copy
+    )
+
+
 def extract_node_name_node_from_security_groups(
         nodes: dict,
         security_groups: dict,
-        ec2_instances: dict
+        ec2_instances: dict,
+        port_filter
 ) -> dict:
     for security_group in security_groups['SecurityGroups']:
         name: str = security_group['GroupId']
+        port_filter_math = False
+        security_group_filtered = {}
+
+        if type(port_filter) != int and ':' in port_filter:
+            filter_ = [int(port) for port in port_filter.split(':')]
+            port_filter_math, security_group_filtered = extract_only_filtered_ports(
+                port_range=filter_,
+                security_group=security_group
+            )
+        elif type(port_filter) == str:
+            try:
+                filter: int = int(port_filter)
+                port_filter_math, security_group_filtered = extract_only_filtered_ports(
+                    port=filter,
+                    security_group=security_group
+                )
+            except ValueError as error:
+                port_filter_math = False
+
         attach_inbound = check_if_security_group_is_attached_to_an_instance(
             ec2_instances=ec2_instances,
             group_name=name
         )
-        if name not in nodes and attach_inbound is True:
+
+        if name not in nodes \
+                and attach_inbound is True and \
+                port_filter_math is True:
             nodes[name] = {
-                'name':  security_group['GroupName'],
+                'name': security_group_filtered['GroupName'],
                 'inbound': {},
-                'outboud': {}
+                'outbound': {}
             }
     return nodes
 
@@ -88,15 +134,33 @@ def iterate_inbound_options(
 
 def extract_node_inbound_from_security_groups(
         nodes: dict,
-        security_groups: dict
+        security_groups: dict,
+        port_filter
 ) -> dict:
     for security_group in security_groups['SecurityGroups']:
         node: str = security_group['GroupId']
+        security_group_filtered = security_group
+        if type(port_filter) != int and ':' in port_filter:
+            filter_ = [int(port) for port in port_filter.split(':')]
+            port_filter_math, security_group_filtered = extract_only_filtered_ports(
+                port_range=filter_,
+                security_group=security_group
+            )
+        elif type(port_filter) == str:
+            try:
+                filter: int = int(port_filter)
+                port_filter_math, security_group_filtered = extract_only_filtered_ports(
+                    port=filter,
+                    security_group=security_group
+                )
+            except ValueError as error:
+                port_filter_math = False
+
 
         nodes: dict = set_inbound_port_range(
             nodes=nodes,
             node=node,
-            security_group=security_group
+            security_group=security_group_filtered
         )
 
         for ip_permission in security_group['IpPermissions']:
@@ -134,7 +198,6 @@ def extract_ec2_instances_into_nodes(
         nodes: dict,
         ec2_instances: dict
 ) -> dict:
-
     for reservation in ec2_instances['Reservations']:
         for instance in reservation['Instances']:
             name: str = get_ec2_name(instance=instance)
@@ -153,7 +216,6 @@ def mount_graph_from_nodes(
         instance_nodes: dict,
         security_groups: dict
 ) -> Digraph:
-
     graph.node('world', color='red')
 
     already_mapped: list = []
@@ -209,6 +271,7 @@ def mount_graph_from_nodes(
 def generate_graph(
         security_groups,
         ec2_instances,
+        port_filter,
         comment: str = 'Security Group Digraph',
         graphviz_format: str = 'xdot'
 ):
@@ -220,12 +283,14 @@ def generate_graph(
     nodes: dict = extract_node_name_node_from_security_groups(
         nodes=nodes,
         security_groups=security_groups,
-        ec2_instances=ec2_instances
+        ec2_instances=ec2_instances,
+        port_filter=port_filter
     )
 
     nodes: dict = extract_node_inbound_from_security_groups(
         nodes=nodes,
-        security_groups=security_groups
+        security_groups=security_groups,
+        port_filter=port_filter
     )
 
     instance_nodes: dict = extract_ec2_instances_into_nodes(
