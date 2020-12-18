@@ -1,6 +1,6 @@
 # aws-sec-graph
 
-# Pourpose
+# Purpose
 
 Give a overview of AWS Security Group and EC2 instances, allowing you to see the relation over instances X security groups X opened ports.
 
