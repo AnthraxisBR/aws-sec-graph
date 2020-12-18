@@ -3,7 +3,8 @@
 # Purpose
 
 Give a graph of the AWS Security Groups and EC2 instances relation.
-Thsi allow you to see the relation over instances X security groups X opened ports based on AWS Filters(with boto3) ou Port filters.
+
+This allow you to see relations over *instances* **X** *security groups* **X** *opened ports* based on AWS Filters(with boto3, Port filters or in all ec2 available instances and Security Groups.
 
 # Requirements
 
