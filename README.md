@@ -16,16 +16,9 @@ This allow you to see relations over *instances* **X** *security groups* **X** *
 - pip
 - boto3 
 
-
-### Prerequisites
-
-- awscli configured
-- sudo apt install graphviz (https://graphviz.org/download/)
-- install graphviz (https://graphviz.readthedocs.io/en/stable/manual.html#installation)
-
 ### Installation
 
-    pip install requirements.txt
+    pip install aws-sec-graph
 
 ### AWS Permissions
 *Read-Only*
@@ -71,25 +64,25 @@ This allow you to see relations over *instances* **X** *security groups* **X** *
 
 ### General usage
    
-    python3 run.py --command=analyze
+    aws-sec-graph --command=analyze
 
 ### Using filter
 
-     python run.py --command=analyze --profile=default --filter='[{"Name": "tag:environment","Values": ["staging"]}]'
+     aws-sec-graph --command=analyze --profile=default --filter='[{"Name": "tag:environment","Values": ["staging"]}]'
 
 ### Using port filter
        
 Range of ports:
      
-     python run.py --command=analyze --profile=default --port-filter=20:22
+     aws-sec-graph --command=analyze --profile=default --port-filter=20:22
      
 Unique port:
      
-     python run.py --command=analyze --profile=default --port-filter=22
+     aws-sec-graph --command=analyze --profile=default --port-filter=22
      
  ## Change output format (based on graphviz lib)
 
-    python run.py --command=analyze --profile=default --filter='[{"Name": "tag:environment","Values": ["staging"]}]' --format=xdot
+    aws-sec-graph --command=analyze --profile=default --filter='[{"Name": "tag:environment","Values": ["staging"]}]' --format=xdot
 
 # Recomendations
 
