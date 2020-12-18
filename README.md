@@ -2,7 +2,8 @@
 
 # Purpose
 
-Give a overview of AWS Security Group and EC2 instances, allowing you to see the relation over instances X security groups X opened ports.
+Give a graph of the AWS Security Groups and EC2 instances relation.
+Thsi allow you to see the relation over instances X security groups X opened ports based on AWS Filters(with boto3) ou Port filters.
 
 # Requirements
 
@@ -11,31 +12,55 @@ Give a overview of AWS Security Group and EC2 instances, allowing you to see the
 - python3
 - awscli
 - graphviz
+- pip
+- boto3 
 
 
 ### Prerequisites
 
 - awscli configured
 - sudo apt install graphviz (https://graphviz.org/download/)
-- pip install graphviz (https://graphviz.readthedocs.io/en/stable/manual.html#installation)
+- install graphviz (https://graphviz.readthedocs.io/en/stable/manual.html#installation)
+
+### Installation
+
+    pip install requirements.txt
 
 ### AWS Permissions
-- Read-Only
+*Read-Only*
     
-- Permissions
-
+*Permissions:*
 
     ec2:DescribeInstances
-   
+    ec2:DescribeTags
     ec2:DescribeSecurityGroups
 
-- Resources
+*Resources:*
 
-    * All
+    *(All)
+
+*Example:*
+ 
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "ec2:DescribeInstances",
+                    "ec2:DescribeTags",
+                    "ec2:DescribeSecurityGroups"
+                ],
+                "Resource": "*"
+            }
+        ]
+    }
 
 # Options:
     
-    --command : Only "analyze" command available
+    --command : 
+        Only "analyze" command available
     --profile  : Inform aws profile to authenticate using boto3 lib
     --filter : Filter to apply on describe instances (https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html)
     --format : output format (https://graphviz.org/doc/info/output.html)
