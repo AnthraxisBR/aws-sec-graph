@@ -19,7 +19,7 @@ class AwsSecGraph(object):
             dest='command',
             action='store',
             type=str,
-            help='',
+            help='The command to run the analyze',
             choices=['analyze']
         )
 
@@ -58,7 +58,9 @@ class AwsSecGraph(object):
                             action='store',
                             type=str,
                             default='default',
-                            help='AWS Profile to authenticate'
+                            help='AWS Profile to authenticate, will use the \
+                            profiles available on .aws/credentials. \
+                            Default: default'
                             )
 
         parser.add_argument('--filter',
@@ -67,7 +69,10 @@ class AwsSecGraph(object):
                             type=str,
                             required=False,
                             default='',
-                            help=''
+                            help='This is the filter of EC2 instances, \
+                            this field used the AWS JSON standard filter. \n \
+                            Example: [{"Name": "tag:environment","Values": ["staging"]}]',
+
                             )
 
         parser.add_argument('--format',
@@ -76,7 +81,8 @@ class AwsSecGraph(object):
                             type=str,
                             required=False,
                             default='xdot',
-                            help=''
+                            help='The format for the file of graph output',
+                            choices=['xdot', 'png', 'jpeg', 'pdf', 'svg']
                             )
 
         parser.add_argument('--port-filter',
@@ -84,7 +90,9 @@ class AwsSecGraph(object):
                             action='store',
                             type=str,
                             required=False,
-                            help=''
+                            help='Port or port range to generate output graph. \
+                                 Example: --port-filter=22 or \
+                                 --port-filter=20:22'
                             )
         args = parser.parse_args(sys.argv[2:])
 
