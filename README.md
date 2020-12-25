@@ -95,4 +95,5 @@ Unique port:
 2. Filter for instances to graph: done (08/11/2020)
 3. Filter for ports: done (18/12/2020)
 4. Generate different page for security group
+5. Optmize and clear code 
 
