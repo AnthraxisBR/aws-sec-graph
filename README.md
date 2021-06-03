@@ -6,6 +6,10 @@ Give a graph of the AWS Security Groups and EC2 instances relation.
 
 This allow you to see relations over *instances* **X** *security groups* **X** *opened ports* based on AWS Filters(with boto3, Port filters or in all ec2 available instances and Security Groups.
 
+### Output Example:
+![Output Example](example.jpg)
+
+
 # Requirements
 
 ### Packages

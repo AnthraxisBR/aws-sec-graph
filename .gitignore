@@ -134,3 +134,4 @@ public/
 *.xdot
 
 .idea*
+*.json
