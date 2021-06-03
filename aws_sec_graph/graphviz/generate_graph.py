@@ -32,7 +32,7 @@ def extract_only_filtered_ports(
             from_port = ip_permission['FromPort']
             to_port = ip_permission['ToPort']
             if len(port_range) > 0:
-                if from_port in port_range:
+                if port_range[0] <= from_port <= port_range[1]:
                     security_group_copy['IpPermissions'].append(ip_permission)
             else:
                 if to_port <= port >= from_port:
@@ -53,8 +53,8 @@ def extract_node_name_node_from_security_groups(
         name: str = security_group['GroupId']
         port_filter_math = False
         security_group_filtered = {}
-
         if type(port_filter) != int and ':' in port_filter:
+
             filter_ = [int(port) for port in port_filter.split(':')]
             port_filter_math, security_group_filtered = extract_only_filtered_ports(
                 port_range=filter_,
@@ -155,7 +155,6 @@ def extract_node_inbound_from_security_groups(
                 )
             except ValueError as error:
                 port_filter_math = False
-
 
         nodes: dict = set_inbound_port_range(
             nodes=nodes,

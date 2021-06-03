@@ -7,7 +7,7 @@ def analyze(args):
     profile: str = args.profile
     filter: str = args.filter
     graphviz_format: str = args.format
-    port_filter: str = args.port_filter
+    port_filter: str = "0:65535" if args.port_filter is None else args.port_filter
 
     security_groups = get_security_groups(profile=profile, filter=filter)
     ec2_instances = get_ec2_instances(profile=profile, filter=filter)
