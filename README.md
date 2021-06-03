@@ -16,8 +16,20 @@ This allow you to see relations over *instances* **X** *security groups* **X** *
 - pip
 - boto3 
 
-### Installation
+### Install from source (recommended)
 
+    sudo apt install graphviz
+    sudo apt install xdot
+    sudo apt-get install python3-gi
+    pip install -r requirements.txt
+
+    ''' Only for virutalenv '''
+    pip install vext
+    pip install vext.gi
+
+### Installation from pip
+    
+    sudo apt install graphviz
     pip install aws-sec-graph
 
 ### AWS Permissions
